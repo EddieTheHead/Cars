@@ -18,6 +18,9 @@ public class CarsDatabase {
 		}
 		return result;
 	}
+	public Car[] getAll(){
+		return carsRepo.toArray(new Car[carsRepo.size()]);
+	}
 	
 	public Collection<Car> getByBrand(String brand){
 		List<Car> result = new ArrayList<Car>();

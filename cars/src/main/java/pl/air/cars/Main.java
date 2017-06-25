@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RefineryUtilities;
 import org.joda.time.Days;
@@ -16,6 +17,7 @@ import pl.air.cars.database.CarsDatabase;
 import pl.air.cars.io.CsvParser;
 import pl.air.cars.io.ReadingService;
 import pl.air.cars.model.Car;
+import pl.air.cars.view.LineChartWindow;
 import pl.air.cars.view.PieChartWindow;
 
 public class Main {
@@ -48,6 +50,7 @@ public class Main {
 
 			printDailyMeanMileageOfCarsMadeInYear(2013);
 			showBrandShare();
+			showPriceVsYear();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -57,6 +60,20 @@ public class Main {
 
 	}
 
+
+	private void showPriceVsYear(){
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		Car[] cars = db.getAll();
+		for(Car c: cars){
+			dataset.addValue(c.getPrice(), c.getBrand(), Integer.toString(c.getYear()));
+		}
+		LineChartWindow window = new LineChartWindow("Cena vs rok produkcji", "Cena vs rok produkcji", dataset);
+
+		window.pack();
+		RefineryUtilities.centerFrameOnScreen(window);
+		window.setVisible(true);
+	}
+	
 	private void showBrandShare() {
 		String[] brands = db.getAllBrands();
 		DefaultPieDataset dataset = new DefaultPieDataset();
